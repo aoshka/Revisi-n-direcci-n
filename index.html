@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisión por la Dirección 01 · 2026 — Innovart</title>
+<style>
+  :root {
+    --navy:#1C2B4A; --steel:#2E4068; --gold:#E8A820; --spark:#F5C842;
+    --light:#F0F4F8; --mist:#C8D4E0; --dark:#0D1827; --white:#FFFFFF;
+    --ok:#27A96B; --warn:#E8A820; --alert:#D94040;
+    --ff:-apple-system,"Helvetica Neue",Arial,sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--ff);background:var(--dark);color:var(--white);overflow-x:hidden;}
+
+  /* PROGRESS */
+  #pb{position:fixed;top:0;left:0;height:3px;background:var(--gold);width:0%;z-index:1000;}
+
+  /* NAV */
+  nav{position:fixed;top:3px;left:0;right:0;height:50px;background:rgba(13,24,39,.96);
+    border-bottom:1px solid rgba(232,168,32,.25);z-index:999;padding:0 5vw;
+    display:flex;align-items:center;justify-content:space-between;}
+  .nav-brand{font-weight:800;font-size:.95rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+  .nav-brand span{color:var(--white);}
+  .nav-meta{font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mist);}
+
+  /* HERO */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:90px 5vw 8vh;
+    background:linear-gradient(155deg,#0a1220 0%,#1C2B4A 45%,#0a1220 100%);
+    position:relative;}
+  #hero::before{content:'';position:absolute;inset:0;
+    background:linear-gradient(105deg,transparent 30%,rgba(232,168,32,.05) 50%,transparent 70%);
+    animation:shimmer 6s ease-in-out infinite alternate;}
+  #hero::after{content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(232,168,32,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(232,168,32,.04) 1px,transparent 1px);
+    background-size:60px 60px;}
+  @keyframes shimmer{0%{opacity:.3}100%{opacity:1}}
+
+  .hero-inner{position:relative;z-index:2;max-width:860px;}
+
+  .eyebrow{font-size:.72rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:1rem;display:flex;align-items:center;gap:.7rem;
+    animation:fadeUp .5s ease both;}
+  .eyebrow::before{content:'';display:block;width:28px;height:2px;background:var(--gold);}
+
+  .hero-title{font-size:clamp(3.2rem,9vw,7rem);font-weight:900;line-height:.92;
+    letter-spacing:-.02em;text-transform:uppercase;color:var(--white);margin-bottom:1.4rem;
+    animation:fadeUp .5s .1s ease both;}
+  .hero-title .ac{color:var(--gold);}
+
+  .hero-sub{font-size:1rem;font-weight:300;color:var(--mist);max-width:500px;line-height:1.7;
+    margin-bottom:2rem;animation:fadeUp .5s .2s ease both;}
+
+  .chips{display:flex;flex-wrap:wrap;gap:.45rem;animation:fadeUp .5s .3s ease both;}
+  .chip{padding:.3rem .85rem;border:1px solid rgba(232,168,32,.4);border-radius:2px;
+    font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--spark);}
+
+  .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;flex-direction:column;align-items:center;gap:.35rem;
+    font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.35);
+    animation:bob 2s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+  /* ALL SECTION CONTENT VISIBLE — no JS reveal */
+  .sec{padding:90px 5vw 70px;}
+  .bg-a{background:linear-gradient(145deg,#0D1827 0%,#1C2B4A 60%,#0D1827 100%);}
+  .bg-b{background:linear-gradient(145deg,#1a2540 0%,#0D1827 60%,#1C2B4A 100%);}
+
+  .s-num{font-size:.68rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:.4rem;display:flex;align-items:center;gap:.6rem;}
+  .s-num::before{content:'';display:block;width:22px;height:2px;background:var(--gold);}
+  .s-title{font-size:clamp(2rem,4.5vw,3.4rem);font-weight:900;text-transform:uppercase;
+    line-height:.95;color:var(--white);margin-bottom:2.2rem;}
+
+  /* POLÍTICA */
+  .policy-box{max-width:760px;padding:1.8rem 2.2rem;background:rgba(255,255,255,.04);
+    border:1px solid rgba(232,168,32,.2);border-left:4px solid var(--gold);
+    font-size:1rem;font-weight:300;color:var(--light);line-height:1.8;}
+  .bullets{list-style:none;margin-top:1.2rem;display:flex;flex-direction:column;gap:.6rem;}
+  .bullets li{display:flex;gap:.7rem;font-size:.88rem;color:var(--mist);}
+  .bullets li::before{content:'▸';color:var(--gold);flex-shrink:0;}
+
+  /* FODA */
+  .foda{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:860px;border:2px solid rgba(232,168,32,.25);}
+  .fc{padding:1.5rem 1.7rem;min-height:160px;}
+  .fc.F{background:rgba(28,43,74,.95)}.fc.O{background:rgba(39,169,107,.1)}
+  .fc.D{background:rgba(217,64,64,.1)}.fc.A{background:rgba(200,100,20,.1)}
+  .fl{font-weight:900;font-size:.88rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem;}
+  .fc.F .fl{color:var(--spark)}.fc.O .fl{color:#4DD9A0}.fc.D .fl{color:#F08080}.fc.A .fl{color:#F0A060}
+  .fi{list-style:none;display:flex;flex-direction:column;gap:.4rem;}
+  .fi li{font-size:.78rem;line-height:1.5;color:var(--mist);display:flex;gap:.4rem;}
+  .fi li::before{content:'—';color:rgba(255,255,255,.2);flex-shrink:0;}
+
+  /* RING */
+  .ring-wrap{display:flex;align-items:center;gap:2.5rem;flex-wrap:wrap;max-width:660px;}
+  .ring-pct{font-size:3.8rem;font-weight:900;color:var(--spark);}
+  .ring-lbl{font-size:.85rem;color:var(--mist);line-height:1.6;margin-top:.3rem;}
+  .badge-ok{display:inline-flex;align-items:center;gap:.4rem;margin-top:.9rem;padding:.35rem 1rem;
+    background:rgba(39,169,107,.15);border:1px solid rgba(39,169,107,.4);color:#4DD9A0;
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;}
+  .badge-warn{display:inline-flex;align-items:center;gap:.4rem;margin-top:.9rem;padding:.35rem 1rem;
+    background:rgba(232,168,32,.12);border:1px solid rgba(232,168,32,.4);color:var(--spark);
+    font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border-radius:2px;}
+
+  /* OBJETIVOS */
+  .obj{display:flex;align-items:center;gap:1.4rem;padding:1.1rem 1.4rem;max-width:680px;
+    background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-left:4px solid transparent;
+    margin-bottom:.9rem;transition:border-color .3s;}
+  .obj:hover{border-left-color:var(--gold);}
+  .obj-n{font-size:2.4rem;font-weight:900;color:rgba(232,168,32,.2);width:44px;flex-shrink:0;line-height:1;}
+  .obj-b{flex:1;}
+  .obj-m{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.25rem;}
+  .obj-d{font-size:.85rem;color:var(--light);line-height:1.5;}
+  .pill{flex-shrink:0;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    padding:.28rem .75rem;border-radius:2px;border:1px solid rgba(232,168,32,.4);
+    background:rgba(232,168,32,.1);color:var(--spark);}
+
+  /* QUEJAS */
+  .q-big{font-size:clamp(5rem,13vw,9rem);font-weight:900;line-height:1;color:var(--spark);}
+  .q-note{font-size:.85rem;color:var(--mist);max-width:460px;line-height:1.6;margin-top:.5rem;}
+
+  /* AUDITORÍAS */
+  .ai{padding:1.3rem 1.6rem;margin-bottom:.9rem;max-width:800px;border-left:4px solid transparent;}
+  .ai.obs{background:rgba(232,168,32,.06);border-left-color:var(--gold);}
+  .ai.nc{background:rgba(217,64,64,.08);border-left-color:var(--alert);}
+  .ai-tag{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:.35rem;}
+  .ai.obs .ai-tag{color:var(--spark)}.ai.nc .ai-tag{color:#F08080}
+  .ai-clause{font-size:.95rem;font-weight:700;color:var(--white);margin-bottom:.4rem;}
+  .ai-text{font-size:.8rem;line-height:1.7;color:var(--mist);}
+
+  /* INDICADORES */
+  .ind{width:100%;max-width:800px;border-collapse:collapse;font-size:.8rem;}
+  .ind th{font-weight:700;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);
+    padding:.65rem .9rem;border-bottom:2px solid rgba(232,168,32,.3);text-align:left;}
+  .ind td{padding:.75rem .9rem;border-bottom:1px solid rgba(255,255,255,.05);color:var(--mist);vertical-align:middle;}
+  .ind tr:hover td{background:rgba(255,255,255,.03);}
+  .dot{display:inline-block;width:10px;height:10px;border-radius:50%;}
+  .dok{background:var(--ok)}.dwn{background:var(--warn)}.dbd{background:var(--alert)}
+
+  /* RECURSOS */
+  .r-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.3rem;max-width:860px;}
+  .rc{padding:1.6rem;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);
+    transition:border-color .3s,transform .3s;}
+  .rc:hover{border-color:rgba(232,168,32,.4);transform:translateY(-3px);}
+  .rc-ico{font-size:1.7rem;margin-bottom:.9rem;}
+  .rc-lbl{font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+  .rc-ttl{font-size:1.2rem;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:.7rem;}
+  .rc-txt{font-size:.8rem;color:var(--mist);line-height:1.6;}
+  .rc-alert{margin-top:.9rem;padding:.55rem .75rem;background:rgba(217,64,64,.1);border-left:3px solid var(--alert);font-size:.73rem;color:#F08080;line-height:1.5;}
+
+  /* PROVEEDORES */
+  .pr{display:flex;align-items:center;gap:1.1rem;margin-bottom:.75rem;max-width:580px;}
+  .pr-n{font-size:.82rem;color:var(--light);min-width:140px;}
+  .pr-w{flex:1;height:7px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+  .pr-b{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--steel),var(--gold));}
+  .pr-p{font-size:.78rem;color:var(--spark);min-width:38px;text-align:right;}
+
+  /* RIESGOS */
+  .pulse-wrap{display:inline-flex;align-items:center;gap:.55rem;padding:.55rem 1.2rem;
+    background:rgba(39,169,107,.12);border:1px solid rgba(39,169,107,.4);border-radius:2px;
+    font-size:.82rem;font-weight:700;color:#4DD9A0;letter-spacing:.05em;text-transform:uppercase;margin-top:1rem;}
+  .pulse{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:plsanim 2s ease-in-out infinite;}
+  @keyframes plsanim{0%,100%{box-shadow:0 0 0 0 rgba(39,169,107,.5)}50%{box-shadow:0 0 0 6px rgba(39,169,107,0)}}
+
+  /* MEJORAS */
+  .m-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.3rem;max-width:860px;}
+  .mc{padding:1.6rem;background:rgba(255,255,255,.03);border:1px solid rgba(232,168,32,.18);
+    position:relative;overflow:hidden;transition:border-color .3s,transform .3s;}
+  .mc:hover{border-color:var(--gold);transform:translateY(-3px);}
+  .mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+    background:linear-gradient(90deg,var(--gold),var(--spark));
+    transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+  .mc:hover::before{transform:scaleX(1);}
+  .mc-tag{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem;}
+  .mc-ttl{font-size:1.1rem;font-weight:900;text-transform:uppercase;color:var(--white);margin-bottom:.6rem;}
+  .mc-txt{font-size:.8rem;color:var(--mist);line-height:1.6;}
+
+  /* FOOTER */
+  footer{background:var(--dark);border-top:1px solid rgba(232,168,32,.2);
+    padding:2.2rem 5vw;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+  .f-brand{font-weight:900;font-size:.95rem;letter-spacing:.14em;color:var(--gold);text-transform:uppercase;}
+  .f-meta{font-size:.68rem;color:rgba(255,255,255,.3);letter-spacing:.05em;}
+
+  @media(max-width:600px){
+    .foda{grid-template-columns:1fr}
+    .r-grid{grid-template-columns:1fr}
+    .m-grid{grid-template-columns:1fr}
+    footer{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<div id="pb"></div>
+
+<nav>
+  <div class="nav-brand">Innovart <span>Metal Design</span></div>
+  <div class="nav-meta">Revisión por la Dirección · 01 · 2026</div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Innovart Metal Design · León, Guanajuato</div>
+    <h1 class="hero-title">Revisión<br>por la <span class="ac">Dirección</span></h1>
+    <p class="hero-sub">Evaluación integral del Sistema de Gestión de Calidad conforme a ISO 9001:2015. Primer período 2026.</p>
+    <div class="chips">
+      <span class="chip">ISO 9001:2015</span>
+      <span class="chip">01 · 2026</span>
+      <span class="chip">Corte Láser</span>
+      <span class="chip">Doblez CNC</span>
+      <span class="chip">Soldadura MIG / TIG</span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <svg width="16" height="22" viewBox="0 0 16 22" fill="none">
+      <rect x="1" y="1" width="14" height="20" rx="7" stroke="white" stroke-width="1.5"/>
+      <circle cx="8" cy="7" r="2" fill="white"/>
+    </svg>
+    Desplázate
+  </div>
+</section>
+
+<!-- 01 POLÍTICA -->
+<section class="sec bg-a">
+  <div class="s-num">01 — Política de Calidad</div>
+  <h2 class="s-title">Política de<br>Calidad</h2>
+  <div class="policy-box">
+    En Innovart Metal Design, dedicados a la transformación y diseño de soluciones metálicas de alta precisión, buscamos superar las expectativas de nuestros clientes. Nuestra política se fundamenta en tres compromisos:
+    <ul class="bullets">
+      <li>Satisfacer plenamente a nuestros clientes</li>
+      <li>Cumplir con los Requisitos Legales y reglamentarios aplicables</li>
+      <li>Impulsar la mejora continua e innovación</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 02 FODA -->
+<section class="sec bg-b">
+  <div class="s-num">02 — Contexto del SGC</div>
+  <h2 class="s-title">Análisis FODA</h2>
+  <div class="foda">
+    <div class="fc F"><div class="fl">Fortalezas</div><ul class="fi"><li>Adquisición de nueva maquinaria única en el mercado local</li><li>Integración de procesos operativos</li><li>Capacitación constante</li></ul></div>
+    <div class="fc O"><div class="fl">Oportunidades</div><ul class="fi"><li>Capitalización de la certificación ISO para penetrar cuentas corporativas</li><li>Expansión de áreas operativas, crecimiento exponencial</li></ul></div>
+    <div class="fc D"><div class="fl">Debilidades</div><ul class="fi"><li>Alto índice de rotación general</li><li>Concentración del conocimiento técnico especializado</li></ul></div>
+    <div class="fc A"><div class="fl">Amenazas</div><ul class="fi"><li>Fuga de talento especializado hacia competidores de mayor tamaño</li></ul></div>
+  </div>
+</section>
+
+<!-- 03 SATISFACCIÓN -->
+<section class="sec bg-a">
+  <div class="s-num">03 — Partes Interesadas</div>
+  <h2 class="s-title">Satisfacción<br>del Cliente</h2>
+  <div class="ring-wrap">
+    <svg width="130" height="130" viewBox="0 0 130 130">
+      <circle cx="65" cy="65" r="52" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="13"/>
+      <circle cx="65" cy="65" r="52" fill="none" stroke="url(#g1)" stroke-width="13"
+        stroke-dasharray="326" stroke-dashoffset="18" stroke-linecap="round" transform="rotate(-90 65 65)"/>
+      <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#C47F17"/><stop offset="100%" stop-color="#F5C842"/>
+      </linearGradient></defs>
+    </svg>
+    <div>
+      <div class="ring-pct">94.6%</div>
+      <div class="ring-lbl">Resultado Satisfactorio<br>Primera aplicación — Clientes tipo "A"</div>
+      <div class="badge-ok">✓ Aprobatorio · Mín. 85%</div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 OBJETIVOS -->
+<section class="sec bg-b">
+  <div class="s-num">04 — Grado de Logro</div>
+  <h2 class="s-title">Objetivos de<br>Calidad</h2>
+  <div class="obj"><div class="obj-n">1</div><div class="obj-b"><div class="obj-m">Objetivo 1</div><div class="obj-d">Cumplimiento del SGC y satisfacción del cliente</div></div><div class="pill">Aprobatorio · Mín. 85%</div></div>
+  <div class="obj"><div class="obj-n">2</div><div class="obj-b"><div class="obj-m">Objetivo 2</div><div class="obj-d">Eficiencia operativa y conformidad del producto</div></div><div class="pill">Aprobatorio · Mín. 85%</div></div>
+  <div class="obj"><div class="obj-n">3</div><div class="obj-b"><div class="obj-m">Objetivo 3</div><div class="obj-d">Control de no conformidades y acciones correctivas</div></div><div class="pill">Aprobatorio · Máx. 10 NC</div></div>
+</section>
+
+<!-- 05 QUEJAS -->
+<section class="sec bg-a">
+  <div class="s-num">05 — Desempeño de Procesos</div>
+  <h2 class="s-title">Quejas /<br>Reclamos</h2>
+  <div class="q-big">1</div>
+  <p class="q-note">Una queja registrada en el período. Evidencia documental pendiente de integrar al expediente.</p>
+  <div class="badge-warn" style="margin-top:1.1rem;">⚠ Evidencia pendiente de agregar</div>
+</section>
+
+<!-- 06 NC/AC -->
+<section class="sec bg-b">
+  <div class="s-num">06 — No Conformidades</div>
+  <h2 class="s-title">Estado de NC<br>y Acciones Correctivas</h2>
+  <p style="font-size:.85rem;color:var(--mist);max-width:580px;line-height:1.7;margin-bottom:1.4rem;">Seguimiento activo de acciones correctivas en el período. Datos de cierre verificables en Sofidya.</p>
+  <div class="badge-warn">⚙ Tabla de seguimiento pendiente de completar en el archivo final</div>
+</section>
+
+<!-- 07 INDICADORES -->
+<section class="sec bg-a">
+  <div class="s-num">07 — Seguimiento y Medición</div>
+  <h2 class="s-title">Listado de<br>Indicadores</h2>
+  <table class="ind">
+    <thead><tr><th>Indicador</th><th>Proceso</th><th>Meta</th><th>Ene</th><th>Feb</th><th>Mar</th><th>Abr</th><th>May</th></tr></thead>
+    <tbody>
+      <tr><td>Satisfacción cliente</td><td>Ventas</td><td>≥85%</td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td></tr>
+      <tr><td>Entregas a tiempo</td><td>Producción</td><td>≥90%</td><td><span class="dot dok"></span></td><td><span class="dot dwn"></span></td><td><span class="dot dok"></span></td><td><span class="dot dwn"></span></td><td><span class="dot dok"></span></td></tr>
+      <tr><td>Producto no conforme</td><td>Calidad</td><td>≤3%</td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dbd"></span></td><td><span class="dot dwn"></span></td><td><span class="dot dok"></span></td></tr>
+      <tr><td>Eficiencia de corte</td><td>Operaciones</td><td>≥88%</td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dok"></span></td><td><span class="dot dwn"></span></td></tr>
+    </tbody>
+  </table>
+  <div style="margin-top:.9rem;display:flex;gap:1.4rem;flex-wrap:wrap;">
+    <span style="font-size:.7rem;color:var(--mist);display:flex;align-items:center;gap:.4rem;"><span class="dot dok"></span> En meta</span>
+    <span style="font-size:.7rem;color:var(--mist);display:flex;align-items:center;gap:.4rem;"><span class="dot dwn"></span> Atención</span>
+    <span style="font-size:.7rem;color:var(--mist);display:flex;align-items:center;gap:.4rem;"><span class="dot dbd"></span> Fuera de meta</span>
+  </div>
+</section>
+
+<!-- 08 AUDITORÍAS -->
+<section class="sec bg-b">
+  <div class="s-num">08 — Auditorías Internas</div>
+  <h2 class="s-title">Resultado de<br>Auditorías</h2>
+  <div class="ai obs"><div class="ai-tag">Observación</div><div class="ai-clause">7.1 Recursos — Mantenimiento preventivo</div><p class="ai-text">8 equipos sin mantenimiento preventivo registrado en Sofidya. Fechas en abril-mayo sin evidencia al momento de la auditoría.</p></div>
+  <div class="ai obs"><div class="ai-tag">Observación</div><div class="ai-clause">7.3 Toma de conciencia</div><p class="ai-text">Registros con campos incompletos (fecha, área, puesto). Un registro sin respuestas ni evidencia de examen para personal de Compras y RH.</p></div>
+  <div class="ai obs"><div class="ai-tag">Observación</div><div class="ai-clause">8.2 Requisitos para productos y servicios</div><p class="ai-text">Dos montos en FUNNEL distintos a los establecidos en Odoo.</p></div>
+  <div class="ai obs"><div class="ai-tag">Observación</div><div class="ai-clause">9.1 Seguimiento, medición, análisis y evaluación</div><p class="ai-text">Indicadores fuera de meta sin No Conformidad generada conforme a la ficha de proceso.</p></div>
+  <div class="ai nc"><div class="ai-tag">No Conformidad</div><div class="ai-clause">8.1 Planificación y control operacional</div><p class="ai-text">Piezas con oxidación y daño en área de producto conforme. Sin criterios de liberación documentados: responsables, inspección, muestra, aceptación/rechazo ni evidencia requerida.</p></div>
+  <div class="ai nc"><div class="ai-tag">No Conformidad</div><div class="ai-clause">8.3 Diseño y desarrollo</div><p class="ai-text">Núm. de diseño #16042601 (Guarda y tapa INOX) y #16042603 (Celosías pequeñas) en FUNNEL asignados a proyectos y clientes incorrectos.</p></div>
+</section>
+
+<!-- 09 PROVEEDORES -->
+<section class="sec bg-a">
+  <div class="s-num">09 — Desempeño de Proveedores</div>
+  <h2 class="s-title">Evaluación de<br>Proveedores</h2>
+  <p style="font-size:.83rem;color:var(--mist);margin-bottom:1.8rem;">Aprobatorio mínimo esperado: <strong style="color:var(--spark)">85%</strong></p>
+  <div class="pr"><span class="pr-n">Aceros del Bajío</span><div class="pr-w"><div class="pr-b" style="width:92%"></div></div><span class="pr-p">92%</span></div>
+  <div class="pr"><span class="pr-n">Ferremat León</span><div class="pr-w"><div class="pr-b" style="width:87%"></div></div><span class="pr-p">87%</span></div>
+  <div class="pr"><span class="pr-n">Gases Industriales</span><div class="pr-w"><div class="pr-b" style="width:78%"></div></div><span class="pr-p" style="color:#F08080">78%</span></div>
+  <div class="pr"><span class="pr-n">Consumibles CNC</span><div class="pr-w"><div class="pr-b" style="width:90%"></div></div><span class="pr-p">90%</span></div>
+  <p style="font-size:.68rem;color:rgba(255,255,255,.3);margin-top:1rem;">* Datos de ejemplo — actualizar con evaluaciones reales del período</p>
+</section>
+
+<!-- 10 RECURSOS -->
+<section class="sec bg-b">
+  <div class="s-num">10 — Adecuación de Recursos</div>
+  <h2 class="s-title">Adecuación<br>de Recursos</h2>
+  <div class="r-grid">
+    <div class="rc"><div class="rc-ico">👥</div><div class="rc-lbl">Personal</div><div class="rc-ttl">Capital Humano</div><p class="rc-txt">Nuevo tabulador salarial, bonos de retención y presupuesto para capacitación técnica. Acelerar ingresos y mejorar prestaciones.</p></div>
+    <div class="rc"><div class="rc-ico">🏭</div><div class="rc-lbl">Infraestructura</div><div class="rc-ttl">Equipo Crítico</div><p class="rc-txt">Estado actual:</p><div class="rc-alert">⚠ Correctivo Urgente · Láser 1500W<br>⚠ Correctivo Urgente · Láser 6000W<br>· Soldadura MIG · Montacargas</div></div>
+    <div class="rc"><div class="rc-ico">🤝</div><div class="rc-lbl">Ambiente Laboral</div><div class="rc-ttl">Clima Org.</div><p class="rc-txt">Dinámicas de integración para reducir rotación. Pendiente: solicitar a Isabel resultados de encuestas de clima organizacional.</p></div>
+  </div>
+</section>
+
+<!-- 11/12 RIESGOS -->
+<section class="sec bg-a">
+  <div class="s-num">11 / 12 — Riesgos y Oportunidades</div>
+  <h2 class="s-title">Eficacia de<br>Acciones</h2>
+  <div class="pulse-wrap"><div class="pulse"></div>Riesgos bajo control — Estatus actual</div>
+  <div class="r-grid" style="margin-top:2rem;">
+    <div class="rc"><div class="rc-lbl">Riesgos</div><div class="rc-ttl">Controlados</div><p class="rc-txt">Riesgos identificados con acciones implementadas dentro de parámetros de aceptación establecidos.</p></div>
+    <div class="rc"><div class="rc-lbl">Oportunidades</div><div class="rc-ttl">En Seguimiento</div><p class="rc-txt">Oportunidades en proceso de planificación e implementación conforme al plan de acción.</p></div>
+  </div>
+</section>
+
+<!-- 13 MEJORAS -->
+<section class="sec bg-b" style="padding-bottom:100px;">
+  <div class="s-num">13 — Recomendaciones</div>
+  <h2 class="s-title">Propuestas<br>de Mejora</h2>
+  <p style="font-size:.85rem;color:var(--spark);font-weight:700;letter-spacing:.06em;margin-bottom:1.8rem;">MEJORA = AHORRO</p>
+  <div class="m-grid">
+    <div class="mc"><div class="mc-tag">Infraestructura</div><div class="mc-ttl">Mantenimiento Preventivo</div><p class="mc-txt">Plan con calendario en Sofidya. Prioridad en Láser 1500W y 6000W para evitar paros no programados.</p></div>
+    <div class="mc"><div class="mc-tag">Calidad</div><div class="mc-ttl">Criterios de Liberación</div><p class="mc-txt">Documentar en Producción: responsables, método de inspección, muestra y criterios de aceptación/rechazo.</p></div>
+    <div class="mc"><div class="mc-tag">Diseño</div><div class="mc-ttl">Trazabilidad FUNNEL</div><p class="mc-txt">Validación cruzada FUNNEL–Odoo para garantizar que números de diseño correspondan al cliente y proyecto correcto.</p></div>
+    <div class="mc"><div class="mc-tag">Capital Humano</div><div class="mc-ttl">Retención de Talento</div><p class="mc-txt">Bonos de retención y plan de carrera técnica para reducir concentración de conocimiento y rotación.</p></div>
+    <div class="mc"><div class="mc-tag">Toma de Conciencia</div><div class="mc-ttl">Registros Completos</div><p class="mc-txt">Reforzar llenado de formatos: fecha, área, puesto y evidencia de examen. Auditoría spot mensual.</p></div>
+    <div class="mc"><div class="mc-tag">Indicadores</div><div class="mc-ttl">NC por Indicador</div><p class="mc-txt">Generar NC inmediata cuando un indicador supere su límite de control, conforme a la ficha de proceso.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="f-brand">Innovart Metal Design</div>
+    <div class="f-meta" style="margin-top:.3rem;">León, Guanajuato, México · SGC ISO 9001:2015</div>
+  </div>
+  <div class="f-meta" style="text-align:right;">Revisión por la Dirección · 01 · 2026<br>Documento de uso interno</div>
+</footer>
+
+<script>
+  window.addEventListener('scroll', function() {
+    var s = window.scrollY, t = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('pb').style.width = (s/t*100)+'%';
+  }, {passive:true});
+</script>
+</body>
+</html>
